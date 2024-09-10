@@ -51,5 +51,5 @@ brother(Child, Brother):- Child \= Brother, mother(Child, Mom), male(Brother), m
 sister(Child, Sister):- Child \= Sister, mother(Child, Mom), female(Sister), mother(Sister, Mom).
 aunt(Child, Aunt):- Child \= Aunt, mother(Child, Mom), (sister(Mom, Aunt) ; (married(Mom, Dad), sister(Dad, Aunt))).
 uncle(Child, Uncle):- mother(Child, Mom), (brother(Mom, Uncle) ; (married(Mom, Dad), brother(Dad, Uncle))).
-grandfather(Child, Grandfather):- mother(Child, Mom), mother(Mom, Grandma), married(Grandma, Grandfather).
-grandmother(Child, Grandmother):- mother(Child, Mom), mother(Mom, Grandmother).
+grandfather(Child, Grandfather):- mother(Child, Mom), (mother(Mom, Grandma) ; (married(Mom, Dad), mother(Dad, Grandma))), married(Grandma, Grandfather).
+grandmother(Child, Grandmother):- mother(Child, Mom), (mother(Mom, Grandmother) ; (married(Mom, Dad), mother(Dad, Grandmother))).
