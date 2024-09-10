@@ -14,6 +14,7 @@ mother(gary, may).
 mother(mary, may).
 
 mother(oliver, sam).
+mother(pam, sam).
 
 married(jane, bob).
 married(emma, alan).
@@ -41,6 +42,7 @@ female(lily).
 female(kate).
 female(mary).
 female(sam).
+female(pam).
 
 father(Child, Father):- married(Wife, Father), mother(Child, Wife).
 brother(Child, Brother):- Child \= Brother, mother(Child, Mom), male(Brother), mother(Brother, Mom).
