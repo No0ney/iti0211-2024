@@ -38,9 +38,9 @@ female(kate).
 female(mary).
 
 father(Child, Father):- married(Wife, Father), mother(Child, Wife).
-brother(Child, Brother):- Child /= Brother, mother(Child, Mom), male(Brother), mother(Brother, Mom).
-sister(Child, Sister):- Child /= Sister, mother(Child, Mom), female(Sister), mother(Sister, Mom).
-aunt(Child, Aunt):- mother(Child, Mom), sister(mom, Aunt).
+brother(Child, Brother):- Child \= Brother, mother(Child, Mom), male(Brother), mother(Brother, Mom).
+sister(Child, Sister):- Child \= Sister, mother(Child, Mom), female(Sister), mother(Sister, Mom).
+aunt(Child, Aunt):- Child \= Aunt, mother(Child, Mom), sister(Mom, Aunt).
 uncle(Child, Uncle):- mother(Child, Mom), brother(Mom, Uncle).
 grandfather(Child, Grandfather):- mother(Child, Mom), mother(Mom, Grandma), married(Grandma, Grandfather).
 grandmother(Child, Grandmother):- mother(Child, Mom), mother(Mom, Grandmother).
