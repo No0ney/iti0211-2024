@@ -13,11 +13,14 @@ mother(may, megan).
 mother(gary, may).
 mother(mary, may).
 
+mother(oliver, sam).
+
 married(jane, bob).
 married(emma, alan).
 married(carol, oliver).
 married(megan, rob).
 married(may, harry).
+married(sam, neil).
 
 male(bob).
 male(rob).
@@ -27,6 +30,7 @@ male(oliver).
 male(jake).
 male(simon).
 male(gary).
+male(neil).
 
 female(jane).
 female(carol).
@@ -36,6 +40,7 @@ female(may).
 female(lily).
 female(kate).
 female(mary).
+female(sam).
 
 father(Child, Father):- married(Wife, Father), mother(Child, Wife).
 brother(Child, Brother):- Child \= Brother, mother(Child, Mom), male(Brother), mother(Brother, Mom).
