@@ -68,5 +68,5 @@ grandmother(Child, Grandmother):- mother(Child, Mom), (mother(Mom, Grandmother) 
 ancestor(Child, Parent):- (mother(Parent, Between) ; father(Parent, Between)), ancestor(Child, Between).
 male_ancestor(Child, Parent):- father(Parent, Between), ancestor(Child, Between).
 female_ancestor(Child, Parent):- mother(Parent, Bewtween), ancestor(Child, Bewtween).
-%ancestor1(Child, Parent, N):- .
+ancestor1(Child, Parent, N):- N \= 0, (mother(Parent, Between) ; father(Parent, Between)), ancestor1(Child, Between, N - 1).
 %ancestor2(Child, Parent, X):- .
