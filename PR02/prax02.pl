@@ -65,8 +65,14 @@ uncle(Child, Uncle):- mother(Child, Mom), (brother(Mom, Uncle) ; (married(Mom, D
 grandfather(Child, Grandfather):- mother(Child, Mom), (mother(Mom, Grandma) ; (married(Mom, Dad), mother(Dad, Grandma))), married(Grandma, Grandfather).
 grandmother(Child, Grandmother):- mother(Child, Mom), (mother(Mom, Grandmother) ; (married(Mom, Dad), mother(Dad, Grandmother))).
 
-ancestor(Child, Parent):- (mother(Parent, Between) ; father(Parent, Between)), ancestor(Child, Between).
+parent(Child, Parent):- mother(Child, Parent) ; father(Child, Parent).
+
+ancestor(Child, Parent):- parent(Child, Between), ancestor(Between, Parent).
+
 male_ancestor(Child, Parent):- father(Parent, Between), ancestor(Child, Between).
+
 female_ancestor(Child, Parent):- mother(Parent, Bewtween), ancestor(Child, Bewtween).
+
 ancestor1(Child, Parent, N):- N \= 0, (mother(Parent, Between) ; father(Parent, Between)), ancestor1(Child, Between, N - 1).
+
 %ancestor2(Child, Parent, X):- .
