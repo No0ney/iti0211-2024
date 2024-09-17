@@ -76,7 +76,7 @@ male_ancestor(Child, Parent):- parent(Child, X), male_ancestor(X, Parent).
 female_ancestor(Child, Parent):- mother(Child, Parent).
 female_ancestor(Child, Parent):- parent(Child, X), female_ancestor(X, Parent).
 
-ancestor1(Child, Parent, N):- N is 0.
+ancestor1(Child, Parent, N):- N =:= 0.
 ancestor1(Child, Parent, N):- parent(Child, X), ancestor1(X, Parent, N - 1).
 
 %ancestor2(Child, Parent, X):- .
