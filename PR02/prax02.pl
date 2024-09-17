@@ -69,9 +69,9 @@ parent(Child, Parent):- mother(Child, Parent) ; father(Child, Parent).
 
 ancestor(Child, Parent):- parent(Child, Between), ancestor(Between, Parent).
 
-male_ancestor(Child, Parent):- father(Child, Father), ancestor(Father, Parent).
+male_ancestor(Child, Parent):- parent(Child, Father), male(Father), ancestor(Father, Parent).
 
-female_ancestor(Child, Parent):- mother(Parent, Mother), ancestor(Mother, Parent).
+female_ancestor(Child, Parent):- parent(Child, Mother), female(Mother), ancestor(Mother, Parent).
 
 ancestor1(Child, Parent, N):- N \= 0, (mother(Parent, Between) ; father(Parent, Between)), ancestor1(Child, Between, N - 1).
 
