@@ -79,4 +79,7 @@ female_ancestor(Child, Parent):- parent(Child, X), female_ancestor(X, Parent).
 ancestor1(Child, Parent, N):- N =:= 0.
 ancestor1(Child, Parent, N):- parent(Child, X), ancestor1(X, Parent, N - 1).
 
-%ancestor2(Child, Parent, X):- .
+children(Parent, X):- aggregate_all(count, ((female(Parent), mother(Child, Parent)) ; (male(Parent), father(Child, Parent))), X).
+
+ancestor2(Child, Parent, X):- parent(Child, Parent).
+ancestor2(Child, Parent, X):- parent(Child, Y), children(Y, Count) > X, ancestor(Y, Parent, X).
