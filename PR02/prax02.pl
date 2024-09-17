@@ -70,7 +70,7 @@ parent(Child, Parent):- mother(Child, Parent) ; father(Child, Parent).
 ancestor(Child, Parent):- parent(Child, Parent).
 ancestor(Child, Parent):- parent(Child, X), ancestor(X, Parent).
 
-male_ancestor(Child, Parent):- parent(Child, X), male(X), ancestor(X, Parent).
+male_ancestor(Child, Parent):- parent(Child, X), male(X), male_ancestor(X, Parent).
 
 female_ancestor(Child, Parent):- parent(Child, X), female(X), ancestor(X, Parent).
 
