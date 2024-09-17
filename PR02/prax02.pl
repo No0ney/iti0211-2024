@@ -67,11 +67,12 @@ grandmother(Child, Grandmother):- mother(Child, Mom), (mother(Mom, Grandmother) 
 
 parent(Child, Parent):- mother(Child, Parent) ; father(Child, Parent).
 
-ancestor(Child, Parent):- parent(Child, Between), ancestor(Between, Parent).
+ancestor(Child, Parent):- parent(Child, Parent).
+ancestor(Child, Parent):- parent(Child, X), ancestor(X, Parent).
 
-male_ancestor(Child, Parent):- parent(Child, Father), male(Father), ancestor(Father, Parent).
+male_ancestor(Child, Parent):- parent(Child, X), male(X), ancestor(X, Parent).
 
-female_ancestor(Child, Parent):- parent(Child, Mother), female(Mother), ancestor(Mother, Parent).
+female_ancestor(Child, Parent):- parent(Child, X), female(X), ancestor(X, Parent).
 
 ancestor1(Child, Parent, N):- N \= 0, (mother(Parent, Between) ; father(Parent, Between)), ancestor1(Child, Between, N - 1).
 
