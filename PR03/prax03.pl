@@ -12,7 +12,7 @@ paki([_, El2 | Tail], X):- paki([El2 | Tail], X), !.
 
 duplikeeri([], []).
 duplikeeri([El], [El]).
-duplikeeri([El1, El2 | Tail], [X|Y]):- duplikeeri([El2 | Tail], [El1, El1 | Y]).
+duplikeeri([El1, El2 | Tail], [El1, El1 | Y]):- duplikeeri([El2 | Tail], Y).
 
 kordista([], X, []).
 
