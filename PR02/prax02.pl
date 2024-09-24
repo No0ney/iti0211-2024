@@ -81,5 +81,4 @@ ancestor1(Child, Parent, N):- parent(Child, X), ancestor1(X, Parent, N - 1).
 
 children(Parent, X):- aggregate_all(count, ((female(Parent), mother(Child, Parent)) ; (male(Parent), father(Child, Parent))), X).
 
-ancestor2(Child, Parent, _):- parent(Child, Parent).
-ancestor2(Child, Parent, X):- ancestor(Child, Y), children(Y, Count) > X.
+ancestor2(Child, Parent, X):- ancestor(Child, Parent), children(Parent, Count), Count > X.
