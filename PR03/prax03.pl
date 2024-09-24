@@ -1,13 +1,15 @@
-viimane_element(Last, [Last|[]]).
-viimane_element(Last, [_|Tail]):- viimane_element(X, [Tail]).
+viimane_element(Last, [Last | []]).
+viimane_element(Last, [_ | Tail]):- viimane_element(X, [Tail]).
 
 suurim([], []).
-suurim([El], [El]).
-%suurim([Head1, Head2 | Tail], [X|Y]):- .
+suurim([El], [El | _]).
+suurim([El1, El2 | Tail], [Max | Y]):-
+    (El1 >= El2, Max = El1, suurim([El2 | Tail], Y)) ;
+    (El1 < El2, Max = El2, suurim([El2 | Tail], Y)), !.
 
 paki([], []).
 paki([El], [El]).
-paki([El1, El2 | Tail], [El1|Y]):- El1 \= El2, paki([El2 | Tail], Y), !.
+paki([El1, El2 | Tail], [El1 | Y]):- El1 \= El2, paki([El2 | Tail], Y), !.
 paki([_, El2 | Tail], X):- paki([El2 | Tail], X), !.
 
 duplikeeri([], _).
