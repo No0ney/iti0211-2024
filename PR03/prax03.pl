@@ -7,8 +7,8 @@ suurim([El], [El]).
 
 paki([], []).
 paki([El], [El]).
-paki([El1, El2 | Tail], [El1|Y]):- El1 \= El2, paki([El2 | Tail], Y).
-paki([_, El2 | Tail], X):- paki([El2 | Tail], X).
+paki([El1, El2 | Tail], [El1|Y]):- El1 \= El2, paki([El2 | Tail], Y), !.
+paki([_, El2 | Tail], X):- paki([El2 | Tail], X), !.
 
 duplikeeri([], []).
 duplikeeri([El], [El]).
@@ -16,7 +16,7 @@ duplikeeri([El1, El2 | Tail], [X|Y]):- duplikeeri([El2 | Tail], [El1, El1 | Y]).
 
 kordista([], X, []).
 
-paaritu_vordle([El], )
+%paaritu_vordle([El], )
 paaritu_vordle([El1, El2 | Tail], [X|Y]):- paaritu_vordle([_ | Tail], [El1, Y]).
 paaris_vordle([El1, El2 | Tail], [X|Y]).
 suurem_vordle([El1 | Tail], N, [X|Y]).
