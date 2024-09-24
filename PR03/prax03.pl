@@ -1,2 +1,2 @@
-viimane_element(X, []).
-viimane_element(X, [Head|Tail]):- viimane_element(Head, [Tail]).
+viimane_element(Last, [Last|[]]).
+viimane_element(Last, [_|Tail]):- viimane_element(X, [Tail]).
