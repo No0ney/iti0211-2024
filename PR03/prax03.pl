@@ -10,9 +10,9 @@ paki([El], [El]).
 paki([El1, El2 | Tail], [El1|Y]):- El1 \= El2, paki([El2 | Tail], Y), !.
 paki([_, El2 | Tail], X):- paki([El2 | Tail], X), !.
 
-duplikeeri([], []).
-duplikeeri([El], [El]).
-duplikeeri([El1, El2 | Tail], [El1, El1 | Y]):- duplikeeri([El2 | Tail], Y).
+duplikeeri([], _).
+duplikeeri([El], [El, El | _]):- !.
+duplikeeri([El1, El2 | Tail], [El1, El1 | Y]):- duplikeeri([El2 | Tail], Y), !.
 
 kordista([], X, []).
 
