@@ -32,6 +32,7 @@ paaris_vordle([El | Tail], [X|Y]):- (paaris(El), X = El) ; paaris_vordle(Tail, Y
 
 suurem_vordle([El | Tail], N, [X|Y]):- (El > N, X = El) ; suurem_vordle(Tail, N, Y).
 
+vordle_predikaadiga([], _, []).
 vordle_predikaadiga(List, [Pred | N], X):-
     (Pred == "paaritu_arv", paaritu_vordle(List, X)) ;
     (Pred == "paaris_arv", paaris_vordle(List, X)) ;
