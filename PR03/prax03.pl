@@ -23,17 +23,27 @@ kordista([], _, []).
 kordista(L, 1, L).
 kordista([El1 | Tail], N, X):- append(L, P, X), add_el(El1, N, L), kordista(Tail, N, P).
 
-paaritu_vordle([], []).
-paaritu_vordle([El | Tail], [X|Y]):- (mod(El, 2) =\= 0, X = El) ; paaritu_vordle(Tail, Y).
+paaritu_vordle([], _, _).
+paaritu_vordle([El | Tail], List, X):-
+    (mod(El, 2) =\= 0, append(List, [El], New),
+    ((Tail = [], X = New) ; paaritu_vordle(Tail, New, X))) ;
+    (mod(El, 2) =:= 0,
+    ((Tail = [], X = List) ; paaritu_vordle(Tail, List, X))).
 
-paaris_vordle([], []).
-paaris_vordle([El | Tail], [X|Y]):- (mod(El, 2) =:= 0, X = El) ; paaris_vordle(Tail, Y).
+paaris_vordle([], _, _).
+paaris_vordle([El | Tail], List, X):-
+    (mod(El, 2) =:= 0, append(List, [El], New),
+    ((Tail = [], X = New) ; paaris_vordle(Tail, New, X))) ;
+    (mod(El, 2) =\= 0,
+    ((Tail = [], X = List) ; paaris_vordle(Tail, List, X))).
 
 suurem_vordle([], _, []).
-suurem_vordle([El | Tail], N, [X|Y]):- (El > N, X = El) ; suurem_vordle(Tail, N, Y).
+suurem_vordle([El | Tail], N, [X|Y]):-
+    (El > N, X = El) ;
+    suurem_vordle(Tail, N, Y).
 
 vordle_predikaadiga([], _, []).
 vordle_predikaadiga(List, [Pred | N], X):-
-    (Pred == "paaritu_arv", paaritu_vordle(List, X)) ;
-    (Pred == "paaris_arv", paaris_vordle(List, X)) ;
+    (Pred == "paaritu_arv", paaritu_vordle(List, [], X)) ;
+    (Pred == "paaris_arv", paaris_vordle(List, [], X)) ;
     (Pred == "suurem_kui(X)", suurem_vordle(List, N, X)).
