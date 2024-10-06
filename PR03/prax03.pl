@@ -16,13 +16,23 @@ duplikeeri([], _).
 duplikeeri([El], [El, El | _]):- !.
 duplikeeri([El1, El2 | Tail], [El1, El1 | Y]):- duplikeeri([El2 | Tail], Y), !.
 
-kordista([], X, []).
+add_el(_, 0, []).
+add_el(L, N, X):- append([L], P, X), add_el(L, M, P), N is M + 1.
+
+kordista([], _, []).
+kordista(L, 1, L).
+kordista([El1 | Tail], N, X):- append(L, P, X), add_el(El1, N, L), kordista(Tail, N, P).
 
 %paaritu_vordle([El], )
-paaritu_vordle([El1, El2 | Tail], [X|Y]):- paaritu_vordle([_ | Tail], [El1, Y]).
-paaris_vordle([El1, El2 | Tail], [X|Y]).
-suurem_vordle([El1 | Tail], N, [X|Y]).
+paaritu(N): N mod 2 =:= 1.
+paaritu_vordle([El | Tail], [X|Y]):- (paaritu(El), X = El) ; paaritu_vordle(Tail, Y).
+
+paaris(N): not(paaritu(N)).
+paaris_vordle([El | Tail], [X|Y]):- (paaris(El), X = El) ; paaris_vordle(Tail, Y).
+
+suurem_vordle([El | Tail], N, [X|Y]):- (El > N, X = El) ; suurem_vordle(Tail, N, Y).
+
 vordle_predikaadiga(List, [Pred | N], X):-
-    (Pred = paaritu_arv, paaritu_vordle(List, X)) ;
-    (Pred = paaris_arv, paaris_vordle(List, X)) ;
-    (Pred = suurem_kui(X), suurem_vordle(List, N, X)).
+    (Pred == "paaritu_arv", paaritu_vordle(List, X)) ;
+    (Pred == "paaris_arv", paaris_vordle(List, X)) ;
+    (Pred == "suurem_kui(X)", suurem_vordle(List, N, X)).
