@@ -45,7 +45,6 @@ suurem_kui([El | Tail], N, List, X):-
     ((Tail = [], X = List) ; suurem_kui(Tail, N, List, X))).
 
 vordle_predikaadiga([], _, []).
-vordle_predikaadiga(List, [Pred | N], X):-
-    (Pred == "paaritu_arv", paaritu_arv(List, [], X)) ;
-    (Pred == "paaris_arv", paaris_arv(List, [], X)) ;
-    (Pred == "suurem_kui", suurem_kui(List, N, [], X)).
+vordle_predikaadiga(List, [paaritu_arv], X):- paaritu_arv(List, [], X).
+vordle_predikaadiga(List, [paaris_arv], X):- paaris_arv(List, [], X).
+vordle_predikaadiga(List, [suurem_kui | N], X):- suurem_kui(List, N, [], X).
