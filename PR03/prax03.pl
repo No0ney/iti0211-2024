@@ -23,16 +23,17 @@ kordista([], _, []).
 kordista(L, 1, L).
 kordista([El1 | Tail], N, X):- append(L, P, X), add_el(El1, N, L), kordista(Tail, N, P).
 
-%paaritu_vordle([El], )
 paaritu(N): N mod 2 =:= 1.
+paaritu_vordle([], []).
 paaritu_vordle([El | Tail], [X|Y]):- (paaritu(El), X = El) ; paaritu_vordle(Tail, Y).
 
-paaris(N): not(paaritu(N)).
+paaris(N): \+ (paaritu(N)).
+paaris_vordle([], []).
 paaris_vordle([El | Tail], [X|Y]):- (paaris(El), X = El) ; paaris_vordle(Tail, Y).
 
+suurem_vordle([], _, []).
 suurem_vordle([El | Tail], N, [X|Y]):- (El > N, X = El) ; suurem_vordle(Tail, N, Y).
 
-vordle_predikaadiga([], _, []).
 vordle_predikaadiga(List, [Pred | N], X):-
     (Pred == "paaritu_arv", paaritu_vordle(List, X)) ;
     (Pred == "paaris_arv", paaris_vordle(List, X)) ;
