@@ -23,7 +23,7 @@ kordista([], _, []).
 kordista(L, 1, L).
 kordista([El1 | Tail], N, X):- append(L, P, X), add_el(El1, N, L), kordista(Tail, N, P).
 
-paaritu(N): N mod 2 =:= 1.
+paaritu(N): mod(N, 2) =\= 0.
 paaritu_vordle([], []).
 paaritu_vordle([El | Tail], [X|Y]):- (paaritu(El), X = El) ; paaritu_vordle(Tail, Y).
 
