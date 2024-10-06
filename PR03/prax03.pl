@@ -37,13 +37,15 @@ paaris_vordle([El | Tail], List, X):-
     (mod(El, 2) =\= 0,
     ((Tail = [], X = List) ; paaris_vordle(Tail, List, X))).
 
-suurem_vordle([], _, []).
-suurem_vordle([El | Tail], N, [X|Y]):-
-    (El > N, X = El) ;
-    suurem_vordle(Tail, N, Y).
+suurem_vordle([], _, _, _).
+suurem_vordle([El | Tail], N, List, X):-
+    (El > N, append(List, [El], New),
+    ((Tail = [], X = New) ; suurem_vordle(Tail, N, New, X))) ;
+    ((El < N ; El =:= N),
+    ((Tail = [], X = List) ; suurem_vordle(Tail, N, List, X))).
 
 vordle_predikaadiga([], _, []).
 vordle_predikaadiga(List, [Pred | N], X):-
     (Pred == "paaritu_arv", paaritu_vordle(List, [], X)) ;
     (Pred == "paaris_arv", paaris_vordle(List, [], X)) ;
-    (Pred == "suurem_kui(X)", suurem_vordle(List, N, X)).
+    (Pred == "suurem_kui", suurem_vordle(List, N, [], X)).
