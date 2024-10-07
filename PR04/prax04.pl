@@ -21,3 +21,15 @@ reisi(From, To):-
     rongiga(From, Between, _) ;
     lennukiga(From, Between, _)), reisi(Between, To).
 
+reisi(From, From, _).
+reisi(From, To, mine(From, Between, Path)):-
+    (laevaga(From, Between, _) ;
+    bussiga(From, Between, _) ;
+    rongiga(From, Between, _) ;
+    lennukiga(From, Between, _)),
+    reisi(Between, To, Path).
+reisi(From, To, mine(From, To)):-
+    laevaga(From, To, _) ;
+    bussiga(From, To, _) ;
+    rongiga(From, To, _) ;
+    lennukiga(From, To, _).
