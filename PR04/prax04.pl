@@ -21,7 +21,7 @@ reisi(From, To):-
     rongiga(From, Between, _) ;
     lennukiga(From, Between, _)), reisi(Between, To).
 
-reisi(From, From, _).
+reisi(From, From, _):- !.
 reisi(From, To, mine(From, Between, Path)):-
     (laevaga(From, Between, _) ;
     bussiga(From, Between, _) ;
@@ -33,3 +33,16 @@ reisi(From, To, mine(From, To)):-
     bussiga(From, To, _) ;
     rongiga(From, To, _) ;
     lennukiga(From, To, _).
+
+reisi_transpordiga(From, From, _):- !.
+reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
+    ((laevaga(From, Between, _), Pred = laevaga) ;
+    (bussiga(From, Between, _), Pred = bussiga) ;
+    (rongiga(From, Between, _), Pred = rongiga) ;
+    (lennukiga(From, Between, _), Pred = lennukiga)),
+    reisi_transpordiga(Between, To, Path).
+reisi_transpordiga(From, To, mine(From, To, Pred)):-
+    (laevaga(From, To, _), Pred = laevaga) ;
+    (bussiga(From, To, _), Pred = bussiga) ;
+    (rongiga(From, To, _), Pred = rongiga) ;
+    (lennukiga(From, To, _), Pred = lennukiga).
