@@ -38,18 +38,17 @@ reisi(From, To, mine(From, To)):-
     rongiga(From, To, _) ;
     lennukiga(From, To, _).
 
-reisi_transpordiga(From, From, _):- !.
-reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
-    ((laevaga(From, Between, _), Pred = laevaga) ;
-    (bussiga(From, Between, _), Pred = bussiga) ;
-    (rongiga(From, Between, _), Pred = rongiga) ;
-    (lennukiga(From, Between, _), Pred = lennukiga)),
-    reisi_transpordiga(Between, To, Path).
 reisi_transpordiga(From, To, mine(From, To, Pred)):-
-    (laevaga(From, To, _), Pred = laevaga) ;
-    (bussiga(From, To, _), Pred = bussiga) ;
-    (rongiga(From, To, _), Pred = rongiga) ;
-    (lennukiga(From, To, _), Pred = lennukiga).
+    laevaga(From, To, _) -> Pred = laevaga ;
+    bussiga(From, To, _) -> Pred = bussiga ;
+    rongiga(From, To, _) -> Pred = rongiga ;
+    lennukiga(From, To, _) -> Pred = lennukiga.
+reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
+    (laevaga(From, Between, _) -> Pred = laevaga ;
+    bussiga(From, Between, _) -> Pred = bussiga ;
+    rongiga(From, Between, _) -> Pred = rongiga ;
+    lennukiga(From, Between, _) -> Pred = lennukiga),
+    reisi_transpordiga(Between, To, Path).
 
 reisi(From, To, mine(From, Between, Pred, Path), Time):-
     (laevaga(From, Between, Time1) -> Pred = laevaga ;
