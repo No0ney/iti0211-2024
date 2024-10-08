@@ -10,7 +10,7 @@ lennukiga(helsinki, paris, 180).
 lennukiga(paris, berlin, 120).
 lennukiga(paris, tallinn, 120 ).
 
-dynamic(labitud/1).
+:- dynamic labitud/1.
 
 reisi(From, To):-
     laevaga(From, To, _) ;
