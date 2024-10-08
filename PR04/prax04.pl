@@ -10,6 +10,8 @@ lennukiga(helsinki, paris, 180).
 lennukiga(paris, berlin, 120).
 lennukiga(paris, tallinn, 120 ).
 
+dynamic(labitud/1).
+
 reisi(From, To):-
     laevaga(From, To, _) ;
     bussiga(From, To, _) ;
@@ -21,13 +23,15 @@ reisi(From, To):-
     rongiga(From, Between, _) ;
     lennukiga(From, Between, _)), reisi(Between, To).
 
-reisi(From, From, _):- !.
 reisi(From, To, mine(From, Between, Path)):-
     (laevaga(From, Between, _) ;
     bussiga(From, Between, _) ;
     rongiga(From, Between, _) ;
     lennukiga(From, Between, _)),
-    reisi(Between, To, Path).
+    not(labitud(Between)),
+    assertz(labitud(Between)),
+    reisi(Between, To, Path),
+    retractall(labitud/1).
 reisi(From, To, mine(From, To)):-
     laevaga(From, To, _) ;
     bussiga(From, To, _) ;
