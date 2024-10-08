@@ -44,10 +44,7 @@ reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
     (bussiga(From, Between, _), Pred = bussiga) ;
     (rongiga(From, Between, _), Pred = rongiga) ;
     (lennukiga(From, Between, _), Pred = lennukiga)),
-    not(labitud(Between)),
-    assertz(labitud(Between)),
-    reisi_transpordiga(Between, To, Path),
-    retractall(labitud/1).
+    reisi_transpordiga(Between, To, Path).
 reisi_transpordiga(From, To, mine(From, To, Pred)):-
     (laevaga(From, To, _), Pred = laevaga) ;
     (bussiga(From, To, _), Pred = bussiga) ;
