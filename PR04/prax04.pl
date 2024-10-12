@@ -16,10 +16,10 @@ transport(From, To, Time):-
     lennukiga(From, To, Time).
 
 transport_name(From, To, Time, Name):-
-    laevaga(From, To, Time) -> Name = laevaga ;
-    bussiga(From, To, Time) -> Name = bussiga ;
-    rongiga(From, To, Time) -> Name = rongiga ;
-    lennukiga(From, To, Time) -> Name = lennukiga.
+    laevaga(From, To, Time), Name = laevaga ;
+    bussiga(From, To, Time), Name = bussiga ;
+    rongiga(From, To, Time), Name = rongiga ;
+    lennukiga(From, To, Time), Name = lennukiga.
 
 reisi(From, To):-
     transport(From, To, _).
