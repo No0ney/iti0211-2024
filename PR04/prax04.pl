@@ -12,44 +12,38 @@ lennukiga(paris, tallinn, 120 ).
 
 :- dynamic labitud/1.
 
+transport(From, To, Time):-
+    laevaga(From, To, Time) ;
+    bussiga(From, To, Time) ;
+    rongiga(From, To, Time) ;
+    lennukiga(From, To, Time).
+
+transport_name(From, To, Time, Name):-
+    laevaga(From, To, Time) -> Name = laevaga ;
+    bussiga(From, To, Time) -> Name = bussiga ;
+    rongiga(From, To, Time) -> Name = rongiga ;
+    lennukiga(From, To, Time) -> Name = lennukiga.
+
 reisi(From, To):-
-    laevaga(From, To, _) ;
-    bussiga(From, To, _) ;
-    rongiga(From, To, _) ;
-    lennukiga(From, To, _).
+    transport(From, To, _).
 reisi(From, To):-
-    (laevaga(From, Between, _) ;
-    bussiga(From, Between, _) ;
-    rongiga(From, Between, _) ;
-    lennukiga(From, Between, _)), reisi(Between, To).
+    transport(From, Between, _), reisi(Between, To).
 
 reisi(From, To, mine(From, Between, Path)):-
-    (laevaga(From, Between, _) ;
-    bussiga(From, Between, _) ;
-    rongiga(From, Between, _) ;
-    lennukiga(From, Between, _)),
+    transport(From, Between, _),
     not(labitud(Between)),
     assertz(labitud(Between)),
     reisi(Between, To, Path),
     retractall(labitud/1).
 reisi(From, To, mine(From, To)):-
-    laevaga(From, To, _) ;
-    bussiga(From, To, _) ;
-    rongiga(From, To, _) ;
-    lennukiga(From, To, _).
+    transport(From, To, _).
 
 reisi_transpordiga(From, From, _):- !.
 reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
-    ((laevaga(From, Between, _), Pred = laevaga) ;
-    (bussiga(From, Between, _), Pred = bussiga) ;
-    (rongiga(From, Between, _), Pred = rongiga) ;
-    (lennukiga(From, Between, _), Pred = lennukiga)),
+    transport_name(From, To, _, Pred),
     reisi_transpordiga(Between, To, Path).
 reisi_transpordiga(From, To, mine(From, To, Pred)):-
-    (laevaga(From, To, _), Pred = laevaga) ;
-    (bussiga(From, To, _), Pred = bussiga) ;
-    (rongiga(From, To, _), Pred = rongiga) ;
-    (lennukiga(From, To, _), Pred = lennukiga).
+    transport_name(From, To, _, Pred).
 
 reisi(From, To, mine(From, Between, Pred, Path), Time):-
     (laevaga(From, Between, Time1) -> Pred = laevaga ;
