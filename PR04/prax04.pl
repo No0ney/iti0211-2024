@@ -35,6 +35,7 @@ reisi(From, To, mine(From, Between, Path)):-
 reisi(From, To, mine(From, To)):-
     transport(From, To, _).
 
+reisi_transpordiga(From, From, _):- !.
 reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
     transport_name(From, Between, _, Pred),
     reisi_transpordiga(Between, To, Path).
