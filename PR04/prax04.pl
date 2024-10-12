@@ -43,15 +43,9 @@ reisi_transpordiga(From, To, mine(From, To, Pred)):-
     transport_name(From, To, _, Pred).
 
 reisi(From, To, mine(From, Between, Pred, Path), Time):-
-    (laevaga(From, Between, Time1) -> Pred = laevaga ;
-    bussiga(From, Between, Time1) -> Pred = bussiga ;
-    rongiga(From, Between, Time1) -> Pred = rongiga ;
-    lennukiga(From, Between, Time1) -> Pred = lennukiga),
+    transport_name(From, Between, Time1, Pred),
     reisi(Between, To, Path, Time2),
     Time is Time1 + Time2.
 reisi(From, To, mine(From, To, Pred), Time):-
-    (laevaga(From, To, Time1) -> Pred = laevaga ;
-    bussiga(From, To, Time1) -> Pred = bussiga ;
-    rongiga(From, To, Time1) -> Pred = rongiga ;
-    lennukiga(From, To, Time1) -> Pred = lennukiga),
+    transport_name(From, To, Time1, Pred),
     Time is Time1.
