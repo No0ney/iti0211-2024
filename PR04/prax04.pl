@@ -1,10 +1,7 @@
 laevaga(tallinn, helsinki, 120).
 laevaga(tallinn, stockholm, 480).
-
 bussiga(tallinn, riia, 300).
-
 rongiga(riia, berlin, 680).
-
 lennukiga(tallinn, helsinki, 30).
 lennukiga(helsinki, paris, 180).
 lennukiga(paris, berlin, 120).
@@ -38,9 +35,8 @@ reisi(From, To, mine(From, Between, Path)):-
 reisi(From, To, mine(From, To)):-
     transport(From, To, _).
 
-reisi_transpordiga(From, From, _):- !.
 reisi_transpordiga(From, To, mine(From, Between, Pred, Path)):-
-    transport_name(From, To, _, Pred),
+    transport_name(From, Between, _, Pred),
     reisi_transpordiga(Between, To, Path).
 reisi_transpordiga(From, To, mine(From, To, Pred)):-
     transport_name(From, To, _, Pred).
