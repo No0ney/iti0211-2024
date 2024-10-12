@@ -31,7 +31,10 @@ reisi(From, To):-
 
 reisi(From, To, mine(From, Between, Path)):-
     transport(From, Between, _),
-    reisi(Between, To, Path).
+    not(labitud(Between)),
+    assertz(labitud(Between)),
+    reisi(Between, To, Path),
+    retractall(labitud/1).
 reisi(From, To, mine(From, To)):-
     transport(From, To, _).
 
