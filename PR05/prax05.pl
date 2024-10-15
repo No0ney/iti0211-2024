@@ -9,24 +9,28 @@ lennukiga(paris, tallinn, 100, time(15, 50, 0.0), time(19, 5, 0.0)).
 
 :- dynamic labitud/1.
 
-transport(From, To, Price, Time1, Time2):-
-    laevaga(From, To, Price, Time1, Time2) ;
-    bussiga(From, To, Price, Time1, Time2) ;
-    rongiga(From, To, Price, Time1, Time2) ;
-    lennukiga(From, To, Price, Time1, Time2).
+transport(From, To, Price):-
+    laevaga(From, To, Price, _, _) ;
+    bussiga(From, To, Price, _, _) ;
+    rongiga(From, To, Price, _, _) ;
+    lennukiga(From, To, Price, _, _).
 
-transport_name(From, To, Price, Time1, Time2, Name):-
-    laevaga(From, To, Price, Time1, Time2), Name = laevaga ;
-    bussiga(From, To, Price, Time1, Time2), Name = bussiga ;
-    rongiga(From, To, Price, Time1, Time2), Name = rongiga ;
-    lennukiga(From, To, Price, Time1, Time2), Name = lennukiga.
+transport_name(From, To, Price, Name):-
+    laevaga(From, To, Price, _, _), Name = laevaga ;
+    bussiga(From, To, Price, _, _), Name = bussiga ;
+    rongiga(From, To, Price, _, _), Name = rongiga ;
+    lennukiga(From, To, Price, _, _), Name = lennukiga.
 
-reisi(From, To, mine(From, Between, Pred, Path), Price):-
-    transport_name(From, Between, Price1, _, _, Pred),
-    reisi(Between, To, Path, Price2),
-    Price is Price1 + Price2.
 reisi(From, To, mine(From, To, Pred), Price):-
-    transport_name(From, To, Price, _, _, Pred).
+    transport_name(From, To, Price1, Pred),
+    Price is Price1.
+reisi(From, To, mine(From, Between, Pred, Path), Price):-
+    assertz(labitud(From)),
+    transport_name(From, Between, Price1, Pred),
+    not(labitud(Between)),
+    reisi(Between, To, Path, Price2),
+    Price is Price1 + Price2,
+    retractall(labitud/1).
 
 odavaim_reis(From, To, Path, Price):-
     findall(Price, reisi(From, To, Path, Price), List),
