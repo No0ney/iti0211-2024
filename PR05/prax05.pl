@@ -39,21 +39,14 @@ reisi(From, To, mine(From, Between, Pred, Path), Price):-
     retractall(labitud/1).
 
 to_seconds(H, M, S, Seconds):-
-    Seconds is H * 3600 + M * 60 + S.
-
-from_seconds(Seconds, Aeg):-
-    time(H, M, S) = Aeg,
-    H is Seconds // 3600,
-    M is Seconds mod 3600 // 60,
-    S is Seconds mod 3600 mod 60.
+    Seconds is H * 3600 + M * 60 + round(S).
 
 aegade_vahe(Aeg1, Aeg2, Vahe):-
     time(H1,M1,S1) = Aeg1,
     time(H2,M2,S2) = Aeg2,
     to_seconds(H1, M1, S1, Sec1),
     to_seconds(H2, M2, S2, Sec2),
-    Diff is abs(Sec1 - Sec2),
-    from_seconds(Diff, Vahe).
+    Vahe is abs(Sec1 - Sec2).
 
 reisi_aega(From, To, mine(From, To, Pred), Price, Time):-
     transport_name(From, To, Price1, TimeFrom, TimeTo, Pred),
@@ -81,7 +74,14 @@ odavaim([[XPrice, XPath | []] | Tail], [MinPrice, MinPath], Price, Path):-
     (XPrice < MinPrice, odavaim(Tail, [XPrice, XPath], Price, Path)) ;
     (MinPrice < XPrice, odavaim(Tail, [MinPrice, MinPath], Price, Path)).
 
+lyhim([El | Tail], Path, Price, Time):-
+    lyhim(Tail, El, Path, Price, Time).
+
+lyhim([], [Path, Price, MinTime], Path, Price, MinTime).
+lyhim([[XPath, XPrice, XTime | []] | Tail], [MPath, MPrice, MinTime], Path, Price, Time):-
+    (XTime < MinTime, lyhim(Tail, [XPath, XPrice, XTime], Path, Price, Time)) ;
+    (MinTime < XTime, lyhim(Tail, [MPath, MPrice, MinTime], Path, Price, Time)).
+
 lyhim_reis(From, To, Path, Price):-
-    findall(Time, reisi_aega(From, To, Path, Price, Time), L),
-    min_list(L, MinTime),
-    reisi_aega(From, To, Path, Price, MinTime).
+    findall([Path, Price, Time], reisi_aega(From, To, Path, Price, Time), L),
+    lyhim(L, Path, Price, Time).
