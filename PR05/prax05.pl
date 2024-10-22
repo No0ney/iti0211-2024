@@ -33,7 +33,13 @@ reisi(From, To, mine(From, Between, Pred, Path), Price):-
     retractall(labitud/1).
 
 odavaim_reis(From, To, Path, Price):-
-    findall(Price, reisi(From, To, Path, Price), List),
-    min(Price, List).
+    findall([Price, Path], reisi(From, To, Path, Price), L),
+    odavaim(L, Price, Path).
 
-odavaim_reis(From, To, Path, Price):- .
+odavaim([El | Tail], Price, Path):-
+    odavaim(Tail, El, Price, Path).
+
+odavaim([], [MinPrice, MinPath], MinPrice, MinPath).
+odavaim([[XPrice, XPath | []] | Tail], [MinPrice, MinPath], Price, Path):-
+    (XPrice < MinPrice, odavaim(Tail, [XPrice, XPath], Price, Path)) ;
+    (MinPrice < XPrice, odavaim(Tail, [MinPrice, MinPath], Price, Path)).
