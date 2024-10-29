@@ -62,8 +62,11 @@ kas_saab_votta(X,Y,Suund,X1,Y1,X2,Y2):-  % Votmine tagasi vasakule
 
 vota(X,Y,Suund,X1,Y1,X2,Y2):-
     retract(ruut(X, Y, _)),
+    assert(ruut(X, Y, 0)),
     retract(ruut(X1, Y1, _)),
+    assert(ruut(X1, Y1, 0)),
     leia_suund(Color, Suund),
+    retract(ruut(X2, Y2, _)),
     assert(ruut(X2, Y2, Color)).
 %--------------------------------
 kaimine(X,Y,Suund,X1,Y1):-
@@ -88,7 +91,9 @@ kas_naaber_vaba(X,Y,X1,Y1):-
 
 tee_kaik(X,Y,X1,Y1):-
     retract(ruut(X, Y, _)),
+    assert(ruut(X, Y, 0)),
     ((X < X1, Color is 1) ; (X > X1, Color is 2)),
+    retract(ruut(X1, Y1, _)),
     assert(ruut(X1, Y1, Color)).
 
 %---------MÄNGU ALGSEIS-------------
