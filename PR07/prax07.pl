@@ -23,7 +23,8 @@ count_terminals(Node, Terminals, Count):-
     count_terminals(Terminals, Count).
 count_terminals(Node, _, _):-
     not(is_a(_, Node)),
-    assert(lastNode(Node)).
+    assert(lastNode(Node)),
+    count_terminals(Terminals, Count).
 count_terminals(Terminals, Count):-
     findall(Node, lastNode(Node), Terminals),
     length(Terminals, Count).
