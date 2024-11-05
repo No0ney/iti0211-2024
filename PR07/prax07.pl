@@ -21,7 +21,7 @@ count_terminals(Node, Terminals, Count):-
     is_a(X, Node),
     count_terminals(X, Terminals, Count),
     count_terminals(Terminals, Count).
-count_terminals(Node, Terminals, Count):-
+count_terminals(Node, _, _):-
     not(is_a(_, Node)),
     assert(lastNode(Node)),
     count_terminals(Terminals, Count).
