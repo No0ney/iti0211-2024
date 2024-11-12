@@ -15,24 +15,17 @@ eats(zooplankton,veetaimed).
 eats(kalad,zooplankton).
 eats(veeimetajad,kalad).
 
-%:- dynamic lastNode/1.
 :- dynamic max/3.
 
-count_terminals(Node, Terminals, Count):- true.
+find_terminal(Node, Node):- \+ is_a(_, Node).
+find_terminal(Node, Terminal):-
+    is_a(Between, Node),
+    find_terminal(Between, Terminal).
 
-extintion(Who,What_spieces,How_many):- true.
+count_terminals(Node, Terminals, Count):-
+    findall(Terminal, find_terminal(Node, Terminal), Terminals),
+    length(Terminals, Count).
+
+extintion(Who, What_spieces, How_many):- true.
 
 find_most_sensitive_species(Died, Count, Species):- true.
-
-%    is_a(X, Node),
-%    count_terminals(X, Terminals, Count),
-%    count_terminals(Terminals, Count).
-%count_terminals(Node, _, _):-
-%    not(is_a(_, Node)),
-%    assert(lastNode(Node)),
-%    count_terminals(Terminals, Count).
-%count_terminals(Terminals, Count):-
-%    findall(Node, lastNode(Node), Terminals),
-%    length(Terminals, Count).
-
-%extinction(Who,What_spieces,How_many):-.
