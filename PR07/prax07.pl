@@ -15,7 +15,7 @@ eats(zooplankton,veetaimed).
 eats(kalad,zooplankton).
 eats(veeimetajad,kalad).
 
-:- dynamic lastNode/1.
+%:- dynamic lastNode/1.
 :- dynamic max/3.
 
 count_terminals(Node, Terminals, Count):- true.
