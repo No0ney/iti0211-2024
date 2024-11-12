@@ -42,4 +42,18 @@ will_go_extinct2([El | Tail], List, What_spieces):-
     append(List, Terminals, NewList),
     will_go_extinct2(Tail, NewList, What_spieces).
 
-find_most_sensitive_species(Died, Count, Species):- true.
+find_most_sensitive_species(_, _, _) :-
+    retractall(max(_, _, _)),
+    assertz(max(none, 0, [])),
+    (is_a(Species, _); eats(Species, _)),
+    extinction(Species, What_spieces, Count),
+    update_max(Species, Count, What_spieces),
+    fail.
+find_most_sensitive_species(L, C, T) :-
+    max(L, C, T).
+
+update_max(Species, Count, What_spieces) :-
+    max(_, MaxCount, _),
+    Count > MaxCount,
+    retract(max(_, _, _)),
+    assertz(max(Species, Count, What_spieces)).
