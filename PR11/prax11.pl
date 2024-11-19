@@ -58,6 +58,7 @@ position(EmployeeDB, Criteria, Result):-
             Result).
 
 find_employee(EmployeeDB, Attribute, Criteria, Result):-
+    current_predicate(EmployeeDB/3),
     Attribute = 'Name' -> name(EmployeeDB, Criteria, Result) ;
     Attribute = 'Age' -> age(EmployeeDB, Criteria, Result) ;
     Attribute = 'Position' -> position(EmployeeDB, Criteria, Result).
