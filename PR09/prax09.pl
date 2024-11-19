@@ -1,4 +1,5 @@
 liitlause --> lihtlause, liitlause.
+liitlause --> lihtlause, sidusona, liitlause.
 liitlause --> lihtlause.
 
 lihtlause --> nimisonafraas, tegusonafraas.
