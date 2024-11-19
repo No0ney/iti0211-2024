@@ -10,7 +10,6 @@ nimisonafraas --> omadussonafraas, nimisona.
 omadussonafraas --> omadussona, nimisona.
 
 tegusonafraas --> tegusona.
-tegusonafraas --> tegusona, sidusona.
 tegusonafraas --> tegusona, nimisona.
 
 nimisona --> [kivile]; [sammal]; [uhkus]; [upakile]; [raha]; [volad].
