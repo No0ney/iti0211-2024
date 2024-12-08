@@ -131,11 +131,6 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y2 is Y1 + 1, within_boarder(Y2),
     ruut(X2, Y2, 0).
 
-check_for_men_take_again(X2, Y2, X1, Y1, Direction, X3, Y3, X4, Y4):-
-    (moves_for_men_take(X2, Y2, Direction, X3, Y3, X4, Y4), X3 \= X1, Y3 \= Y1)
-    ;
-    X3 is 0, Y3 is 0, X4 is 0, Y4 is 0.
-
 % Simply move a man forward
 moves_for_men_move(X, Y, Direction, X1, Y1):-
     ruut(X, Y, Color),
@@ -159,35 +154,25 @@ moves_for_men_move(X, Y, Direction, X1, Y1):-
 
 % ---------- DAME MOVES ----------
 
-check_no_ally_between(_, _, _, 0, _, _).
-check_no_ally_between(X, Y, Color, Spaces, X1, Y1):-
-    % Moved down-left
-    (X > X1, Y > Y1 ->
-    X2 is X - Spaces, Y2 is Y - Spaces,
-    not(ruut(X2, Y2, Color)),
-    NewSpaces is Spaces - 1,
-    check_no_ally_between(X, Y, Color, NewSpaces, X1, Y1))
+check_no_ally_between(X, Y, Color, X1, Y1):-
+    (X > X1, Y > Y1 -> DirectionX is -1, DirectionY is -1
     ;
-    % Moved down-right
-    (X > X1, Y < Y1 ->
-    X2 is X - Spaces, Y2 is Y + Spaces,
-    not(ruut(X2, Y2, Color)),
-    NewSpaces is Spaces - 1,
-    check_no_ally_between(X, Y, Color, NewSpaces, X1, Y1))
+    X > X1, Y < Y1 -> DirectionX is -1, DirectionY is 1
     ;
-    % Moved up-left
-    (X < X1, Y > Y1 ->
-    X2 is X1 - Spaces, Y2 is Y1 + Spaces,
-    not(ruut(X2, Y2, Color)),
-    NewSpaces is Spaces - 1,
-    check_no_ally_between(X, Y, Color, NewSpaces, X1, Y1))
+    X < X1, Y > Y1 -> DirectionX is 1, DirectionY is -1
     ;
-    % Moved up-right
-    (X < X1, Y < Y1 ->
-    X2 is X1 - Spaces, Y2 is Y1 - Spaces,
-    not(ruut(X2, Y2, Color)),
-    NewSpaces is Spaces - 1,
-    check_no_ally_between(X, Y, Color, NewSpaces, X1, Y1)).
+    X < X1, Y < Y1 -> DirectionX is 1, DirectionY is 1),
+    check_no_ally_between_recursive(X, Y, Color, X1, Y1, DirectionX, DirectionY).
+
+check_no_ally_between_recursive(X, Y, Color, X1, Y1, DirectionX, DirectionY):-
+    NextX is X + DirectionX,
+    NextY is Y + DirectionY,
+    (NextX = X1, NextY = Y1 -> true
+    ;
+    not(ruut(NextX, NextY, Color)),
+    within_boarder(NextX),
+    within_boarder(NextY),
+    check_no_ally_between_recursive(NextX, NextY, Color, X1, Y1, DirectionX, DirectionY)).
 
 % Check up-left
 moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
@@ -195,7 +180,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     member(Spaces, [1, 2, 3, 4, 5, 6, 7]),
     X1 is X + Spaces, within_boarder(X1),
     Y1 is Y - Spaces, within_boarder(Y1),
-    check_no_ally_between(X, Y, Color, Spaces - 1, X1, Y1),
+    check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
     Color =\= OtherColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
@@ -210,7 +195,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     member(Spaces, [1, 2, 3, 4, 5, 6, 7]),
     X1 is X + Spaces, within_boarder(X1),
     Y1 is Y + Spaces, within_boarder(Y1),
-    check_no_ally_between(X, Y, Color, Spaces - 1, X1, Y1),
+    check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
     Color =\= OtherColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
@@ -225,7 +210,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     member(Spaces, [1, 2, 3, 4, 5, 6, 7]),
     X1 is X - Spaces, within_boarder(X1),
     Y1 is Y - Spaces, within_boarder(Y1),
-    check_no_ally_between(X, Y, Color, Spaces - 1, X1, Y1),
+    check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
     Color =\= OtherColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
@@ -240,7 +225,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     member(Spaces, [1, 2, 3, 4, 5, 6, 7]),
     X1 is X - Spaces, within_boarder(X1),
     Y1 is Y + Spaces, within_boarder(Y1),
-    check_no_ally_between(X, Y, Color, Spaces - 1, X1, Y1),
+    check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
     Color =\= OtherColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
@@ -248,11 +233,6 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     Y2 is Y1 + 1, within_boarder(Y2),
     ruut(X2, Y2, 0).
 %    check_no_ally_between(X1, Y1, Color, AfterSpaces - 1, X2, Y2).
-
-check_for_dames_take_again(X2, Y2, X1, Y1, X3, Y3, X4, Y4):-
-    (moves_for_dames_take(X2, Y2, X3, Y3, X4, Y4), X3 \= X1, Y3 \= Y1)
-    ;
-    X2 is 0, Y2 is 0, X3 is 0, Y3 is 0, X4 is 0, Y4 is 0.
 
 % Simply move dame whereever
 moves_for_dames_move(X, Y, X1, Y1):-
