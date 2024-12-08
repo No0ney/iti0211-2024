@@ -79,11 +79,11 @@ check_change_position([ruut(X, Y, Color) | Roots], Direction, MoveList):-
     append(MoveList1, MoveList2, MoveList).
 
 check_dame(X, Y, Color):-
-    (Color = 1 ->
-    (X = 8, retract(ruut(X, Y, Color)), assertz(ruut(X, Y, 10))) ; true)
+    ((Color = 1 ->
+    (X = 8, retract(ruut(X, Y, Color)), assertz(ruut(X, Y, 10))))
     ;
     (Color = 2 ->
-    (X = 1, retract(ruut(X, Y, Color)), assertz(ruut(X, Y, 20))) ; true).
+    (X = 1, retract(ruut(X, Y, Color)), assertz(ruut(X, Y, 20))))) ; true.
 
 % ---------- MAN MOVES ----------
 
@@ -285,7 +285,9 @@ moves_for_dames_move(X, Y, X1, Y1):-
 choose_best_move([], Move, Move).
 choose_best_move([[X, Y, X1, Y1, X2, Y2, X3, Y3, X4, Y4] | List],
                  [N, M, N1, M1, N2, M2, N3, M3, N4, M4], Move):-
-    ((N4 = 0, X4 \= 0 ; N2 = 0, X2 \= 0 ; N = 0, X \= 0) ->
+    ruut(X, Y, Color),
+    ((Color = 1 -> DameSpace is 8) ; (Color = 2 -> DameSpace is 1) ; true),
+    ((N4 = 0, X4 \= 0 ; N2 = 0, X2 \= 0 ; (N2 = 0 ; N2 \= 0), X2 = DameSpace ; N = 0, X \= 0) ->
     append([], [X, Y, X1, Y1, X2, Y2, X3, Y3, X4, Y4], Best)
     ;
     append([], [N, M, N1, M1, N2, M2, N3, M3, N4, M4], Best)),
