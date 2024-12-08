@@ -93,7 +93,8 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y - 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(Color, AllyColor),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 + Direction, within_boarder(X2),
     Y2 is Y1 - 1, within_boarder(Y2),
     ruut(X2, Y2, 0).
@@ -104,7 +105,8 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y + 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(Color, AllyColor),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 + Direction, within_boarder(X2),
     Y2 is Y1 + 1, within_boarder(Y2),
     ruut(X2, Y2, 0).
@@ -115,7 +117,8 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y - 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(Color, AllyColor),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 - Direction, within_boarder(X2),
     Y2 is Y1 - 1, within_boarder(Y2),
     ruut(X2, Y2, 0).
@@ -126,7 +129,8 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y + 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(Color, AllyColor),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 - Direction, within_boarder(X2),
     Y2 is Y1 + 1, within_boarder(Y2),
     ruut(X2, Y2, 0).
