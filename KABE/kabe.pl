@@ -182,7 +182,8 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     Y1 is Y - Spaces, within_boarder(Y1),
     check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(AllyColor, Color),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
     X2 is X1 + 1, within_boarder(X2),
     Y2 is Y1 - 1, within_boarder(Y2),
@@ -197,7 +198,8 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     Y1 is Y + Spaces, within_boarder(Y1),
     check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(AllyColor, Color),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
     X2 is X1 + 1, within_boarder(X2),
     Y2 is Y1 + 1, within_boarder(Y2),
@@ -212,7 +214,8 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     Y1 is Y - Spaces, within_boarder(Y1),
     check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(AllyColor, Color),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
     X2 is X1 - 1, within_boarder(X2),
     Y2 is Y1 - 1, within_boarder(Y2),
@@ -227,7 +230,8 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     Y1 is Y + Spaces, within_boarder(Y1),
     check_no_ally_between(X, Y, Color, X1, Y1),
     ruut(X1, Y1, OtherColor),
-    Color =\= OtherColor, OtherColor =\= 0,
+    dame_color(AllyColor, Color),
+    Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
 %    member(AfterSpaces, [1, 2, 3, 4, 5, 6, 7]),
     X2 is X1 - 1, within_boarder(X2),
     Y2 is Y1 + 1, within_boarder(Y2),
@@ -242,7 +246,7 @@ moves_for_dames_move(X, Y, X1, Y1):-
     (Y1 is Y + Spaces ; Y1 is Y - Spaces), within_boarder(Y1),
 
     ruut(X1, Y1, 0),
-    check_no_ally_between(X, Y, Color, Spaces - 1, X1, Y1),
+    check_no_ally_between(X, Y, Color, X1, Y1),
 
     % Check that there is no enemy piece immediately next to it with a blank space across
     (X2 is X1 + 1, Y2 is Y1 + 1, X3 is X1 - 1, Y3 is Y1 - 1
