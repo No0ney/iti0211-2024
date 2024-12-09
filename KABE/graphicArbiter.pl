@@ -9,7 +9,7 @@
 %mustad(k1)     % mustadega mängib programm k1
 
 valged(human).		% Valged
-mustad(do_turn).		% Mustad
+mustad(larry).		% Mustad
 
 % Seejärel laadida mällu see programm (graphicArbiter) ja võistlevad kabeprogrammid.
 %                                                         _________________________
