@@ -123,15 +123,6 @@ check_change_position([ruut(X, Y, Color) | Roots], Direction, MoveList):-
     append(MoveList1, MoveList2, MoveList).
 
 
-% When the move is complete, check if the man became a dame.
-check_dame(X, Y, Color):-
-    ((Color = 1 ->
-    (X = 8, retract(ruut(X, Y, Color)), assertz(ruut(X, Y, 10))))
-    ;
-    (Color = 2 ->
-    (X = 1, retract(ruut(X, Y, Color)), assertz(ruut(X, Y, 20))))) ; true.
-
-
 % Checks if there is an enemy piece in close proximity to the piece.
 enemy_piece_nearby(X, Y, Color):-
     other_color(Color, EnemyColor),
@@ -395,8 +386,7 @@ do_move([X, Y, X1, Y1, X2, Y2]):-
     assertz(ruut(X, Y, 0)),
     (X1 \= 0 -> retract(ruut(X1, Y1, _)), assertz(ruut(X1, Y1, 0)) ; true),
     retract(ruut(X2, Y2, 0)),
+    % Check if man became a dame.
     ((dame_color(Color, X2, DameColor) -> assertz(ruut(X2, Y2, DameColor)))
     ;
     assertz(ruut(X2, Y2, Color))).
-%    assertz(ruut(X2, Y2, Color)),
-%    check_dame(X2, Y2, Color).
