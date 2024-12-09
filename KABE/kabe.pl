@@ -45,14 +45,14 @@ possible_moves(Color, 0, 0, List, Random):-
     append(MenRoots, DameRoots, Roots),
     % If TakeList is not empty, then no need to look for other moves.
     check_if_can_take_piece(Roots, Direction, TakeList),
-    (length(TakeList, TakeLen),
-    (TakeLen \= 0, append([], TakeList, List), Random is 0)
+    length(TakeList, TakeLen),
+    ((TakeLen \= 0, append([], TakeList, List), Random is 0)
     ;
     % If Take list was empty, then find positions to which a piece can be moved without
     % the risk of being eaten.
     check_safe_change_position(Roots, Direction, SafeMoveList),
-    (length(SafeMoveList, MoveLen),
-    (MoveLen \= 0, append([], SafeMoveList, List), Random is 1)
+    length(SafeMoveList, MoveLen),
+    ((MoveLen \= 0, append([], SafeMoveList, List), Random is 1)
     ;
     % If there are no more safe positions, then just find all the available ones.
     check_change_position(Roots, Direction, MoveList),
@@ -66,13 +66,6 @@ possible_moves(_, X, Y, List, Random):-
     check_if_can_take_piece([ruut(X, Y, Color)], Direction, TakeList),
     length(TakeList, TakeLen),
     TakeLen \= 0, append([], TakeList, List), Random is 0.
-%    ;
-%    check_safe_change_position([ruut(X, Y, Color)], Direction, SafeMoveList),
-%    (length(SafeMoveList, MoveLen),
-%    (MoveLen \= 0, append([], SafeMoveList, List), Random is 1)
-%    ;
-%    check_change_position([ruut(X, Y, Color)], Direction, MoveList),
-%    append([], MoveList, List), Random is 1)).
 
 
 % Check if the piece can take other piece.
@@ -155,7 +148,7 @@ adjacent_with_blank_space(X, Y, EnemyColor, DirectionX, DirectionY):-
     within_boarder(X1), within_boarder(Y1),
     ruut(X1, Y1, EnemyColor),
     % Potentially empty spot across from the enemy.
-    X2 is X1 + DirectionX, Y2 is Y1 + DirectionY,
+    X2 is X - DirectionX, Y2 is Y - DirectionY,
     within_boarder(X2), within_boarder(Y2),
     ruut(X2, Y2, 0).
 
