@@ -30,8 +30,8 @@ other_color(20, 1).
 other_color(20, 10).
 
 % Find the color code for the dame.
-dame_color(1, 10).
-dame_color(2, 20).
+dame_color(1, 8, 10).
+dame_color(2, 1, 20).
 
 % Check that the coord is not outside of the boards boundaries.
 within_boarder(X):- member(X, [1, 2, 3, 4, 5, 6, 7, 8]).
@@ -39,11 +39,10 @@ within_boarder(X):- member(X, [1, 2, 3, 4, 5, 6, 7, 8]).
 % Check all pieces and what moves they can make.
 possible_moves(Color, 0, 0, List, Random):-
     find_direction(Color, Direction),
-    dame_color(Color, DameColor),
+    dame_color(Color, _, DameColor),
     findall(ruut(X, Y, Color), ruut(X, Y, Color), MenRoots),
     findall(ruut(X, Y, DameColor), ruut(X, Y, DameColor), DameRoots),
     append(MenRoots, DameRoots, Roots),
-
     % If TakeList is not empty, then no need to look for other moves.
     check_if_can_take_piece(Roots, Direction, TakeList),
     (length(TakeList, TakeLen),
@@ -61,19 +60,19 @@ possible_moves(Color, 0, 0, List, Random):-
 
 
 % Check if the same piece that previously moved can make another move.
-possible_moves(Color, X, Y, List, Random):-
+possible_moves(_, X, Y, List, Random):-
+    ruut(X, Y, Color),
     find_direction(Color, Direction),
-
     check_if_can_take_piece([ruut(X, Y, Color)], Direction, TakeList),
-    (length(TakeList, TakeLen),
-    (TakeLen \= 0, append([], TakeList, List), Random is 0)
-    ;
-    check_safe_change_position([ruut(X, Y, Color)], Direction, SafeMoveList),
-    (length(SafeMoveList, MoveLen),
-    (MoveLen \= 0, append([], SafeMoveList, List), Random is 1)
-    ;
-    check_change_position([ruut(X, Y, Color)], Direction, MoveList),
-    append([], MoveList, List), Random is 1)).
+    length(TakeList, TakeLen),
+    TakeLen \= 0, append([], TakeList, List), Random is 0.
+%    ;
+%    check_safe_change_position([ruut(X, Y, Color)], Direction, SafeMoveList),
+%    (length(SafeMoveList, MoveLen),
+%    (MoveLen \= 0, append([], SafeMoveList, List), Random is 1)
+%    ;
+%    check_change_position([ruut(X, Y, Color)], Direction, MoveList),
+%    append([], MoveList, List), Random is 1)).
 
 
 % Check if the piece can take other piece.
@@ -83,7 +82,6 @@ check_if_can_take_piece([ruut(X, Y, Color) | Roots], Direction, TakeList):-
     (member(Color, [1, 2]) ->
     findall([X, Y, X1, Y1, X2, Y2, X3, Y3, X4, Y4],
     (moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2),
-
     % Check if later on the piece would be able to make another move after this one.
     check_for_men_take_again(X2, Y2, X1, Y1, Direction, X3, Y3, X4, Y4)),
     TakeList1)
@@ -92,17 +90,13 @@ check_if_can_take_piece([ruut(X, Y, Color) | Roots], Direction, TakeList):-
     (member(Color, [10, 20]) ->
     findall([X, Y, X1, Y1, X2, Y2, X3, Y3, X4, Y4],
     (moves_for_dames_take(X, Y, X1, Y1, X2, Y2),
-
     % Check if later on the piece would be able to make another move after this one.
     check_for_dames_take_again(X2, Y2, X1, Y1, X3, Y3, X4, Y4)),
     TakeList1))),
-
     % Recursive call.
     check_if_can_take_piece(Roots, Direction, TakeList2),
-
     % Compile all moves into one list.
     append(TakeList1, TakeList2, TakeList).
-
 
 % Check if there are safe positions for a piece to move to.
 check_safe_change_position([], _, []).
@@ -173,7 +167,7 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y - 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    dame_color(Color, AllyColor),
+    dame_color(Color, _, AllyColor),
     Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 + Direction, within_boarder(X2),
     Y2 is Y1 - 1, within_boarder(Y2),
@@ -185,7 +179,7 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y + 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    dame_color(Color, AllyColor),
+    dame_color(Color, _, AllyColor),
     Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 + Direction, within_boarder(X2),
     Y2 is Y1 + 1, within_boarder(Y2),
@@ -197,7 +191,7 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y - 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    dame_color(Color, AllyColor),
+    dame_color(Color, _, AllyColor),
     Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 - Direction, within_boarder(X2),
     Y2 is Y1 - 1, within_boarder(Y2),
@@ -209,7 +203,7 @@ moves_for_men_take(X, Y, Direction, X1, Y1, X2, Y2):-
     Y1 is Y + 1, within_boarder(Y1),
     ruut(X, Y, Color),
     ruut(X1, Y1, OtherColor),
-    dame_color(Color, AllyColor),
+    dame_color(Color, _, AllyColor),
     Color =\= OtherColor, OtherColor =\= AllyColor, OtherColor =\= 0,
     X2 is X1 - Direction, within_boarder(X2),
     Y2 is Y1 + 1, within_boarder(Y2),
@@ -227,7 +221,6 @@ moves_for_men_safe_move(X, Y, Direction, X1, Y1):-
     X1 is X + Direction, within_boarder(X1),
     (Y1 is Y - 1 ; Y1 is Y + 1), within_boarder(Y1),
     ruut(X1, Y1, 0),
-
     % Check that there is no enemy piece immediately next to it with a blank space across.
     not(enemy_piece_nearby(X1, Y1, Color)).
 
@@ -269,7 +262,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     X1 is X + Spaces, within_boarder(X1),
     Y1 is Y - Spaces, within_boarder(Y1),
     ruut(X1, Y1, OtherColor),
-    dame_color(AllyColor, Color),
+    dame_color(AllyColor, _, Color),
     check_no_ally_between(X, Y, Color, X1, Y1),
     check_no_ally_between(X, Y, AllyColor, X1, Y1),
     check_no_ally_between(X, Y, OtherColor, X1, Y1),
@@ -289,7 +282,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     X1 is X + Spaces, within_boarder(X1),
     Y1 is Y + Spaces, within_boarder(Y1),
     ruut(X1, Y1, OtherColor),
-    dame_color(AllyColor, Color),
+    dame_color(AllyColor, _, Color),
     check_no_ally_between(X, Y, Color, X1, Y1),
     check_no_ally_between(X, Y, AllyColor, X1, Y1),
     check_no_ally_between(X, Y, OtherColor, X1, Y1),
@@ -309,7 +302,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     X1 is X - Spaces, within_boarder(X1),
     Y1 is Y - Spaces, within_boarder(Y1),
     ruut(X1, Y1, OtherColor),
-    dame_color(AllyColor, Color),
+    dame_color(AllyColor, _, Color),
     check_no_ally_between(X, Y, Color, X1, Y1),
     check_no_ally_between(X, Y, AllyColor, X1, Y1),
     check_no_ally_between(X, Y, OtherColor, X1, Y1),
@@ -329,7 +322,7 @@ moves_for_dames_take(X, Y, X1, Y1, X2, Y2):-
     X1 is X - Spaces, within_boarder(X1),
     Y1 is Y + Spaces, within_boarder(Y1),
     ruut(X1, Y1, OtherColor),
-    dame_color(AllyColor, Color),
+    dame_color(AllyColor, _, Color),
     check_no_ally_between(X, Y, Color, X1, Y1),
     check_no_ally_between(X, Y, AllyColor, X1, Y1),
     check_no_ally_between(X, Y, OtherColor, X1, Y1),
@@ -351,27 +344,24 @@ check_for_dames_take_again(X2, Y2, X1, Y1, X3, Y3, X4, Y4):-
 % Move a dame forward to a safe position.
 moves_for_dames_safe_move(X, Y, X1, Y1):-
     ruut(X, Y, Color),
-    dame_color(AllyColor, Color),
+    dame_color(AllyColor, _, Color),
     member(Spaces, [1, 2, 3, 4, 5, 6, 7]),
     (X1 is X + Spaces ; X1 is X - Spaces), within_boarder(X1),
     (Y1 is Y + Spaces ; Y1 is Y - Spaces), within_boarder(Y1),
-
     % Check that there are no other pieces in the dame's way.
     ruut(X1, Y1, 0),
     check_no_ally_between(X, Y, Color, X1, Y1),
     check_no_ally_between(X, Y, AllyColor, X1, Y1),
-
     % Check that there is no enemy piece immediately next to it with a blank space across.
     not(enemy_piece_nearby(X1, Y1, Color)).
 
 % Simply move a dame forward.
 moves_for_dames_move(X, Y, X1, Y1):-
     ruut(X, Y, Color),
-    dame_color(AllyColor, Color),
+    dame_color(AllyColor, _, Color),
     member(Spaces, [1, 2, 3, 4, 5, 6, 7]),
     (X1 is X + Spaces ; X1 is X - Spaces), within_boarder(X1),
     (Y1 is Y + Spaces ; Y1 is Y - Spaces), within_boarder(Y1),
-
     % Check that there are no other pieces in the dame's way.
     ruut(X1, Y1, 0),
     check_no_ally_between(X, Y, Color, X1, Y1),
@@ -412,5 +402,8 @@ do_move([X, Y, X1, Y1, X2, Y2]):-
     assertz(ruut(X, Y, 0)),
     (X1 \= 0 -> retract(ruut(X1, Y1, _)), assertz(ruut(X1, Y1, 0)) ; true),
     retract(ruut(X2, Y2, 0)),
-    assertz(ruut(X2, Y2, Color)),
-    check_dame(X2, Y2, Color).
+    ((dame_color(Color, X2, DameColor) -> assertz(ruut(X2, Y2, DameColor)))
+    ;
+    assertz(ruut(X2, Y2, Color))).
+%    assertz(ruut(X2, Y2, Color)),
+%    check_dame(X2, Y2, Color).
