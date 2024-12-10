@@ -102,7 +102,7 @@ check_safe_change_position([ruut(X, Y, Color) | Roots], Direction, MoveList):-
     (member(Color, [10, 20]) ->
     findall([X, Y, 0, 0, X1, Y1, 0, 0, 0, 0], moves_for_dames_safe_move(X, Y, X1, Y1), MoveList1))),
     % Recursive call.
-    check_change_position(Roots, Direction, MoveList2),
+    check_safe_change_position(Roots, Direction, MoveList2),
     % Compile all moves into one list.
     append(MoveList1, MoveList2, MoveList).
 
